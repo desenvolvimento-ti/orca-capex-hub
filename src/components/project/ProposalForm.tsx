@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { MoneyInput } from "@/components/ui/money-input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { projectDocPath } from "@/lib/storage";
 import { AlertTriangle, CheckCircle2, Paperclip, Save, X } from "lucide-react";
 import { ACTIVE_CATEGORIES, CATEGORY_LABEL, PRIORITY_LABEL, formatBRL, formatDateBR, parseBRL } from "@/lib/labels";
 import { ScheduleEditor, scheduleMonths } from "@/components/project/ScheduleEditor";
@@ -223,7 +224,7 @@ export function ProposalForm({
       if (isNew && files.length) {
         const failed: string[] = [];
         for (const [typeId, file] of files) {
-          const path = `${profile.id}/${id}/${Date.now()}-${file.name}`;
+          const path = projectDocPath(profile.id, id!, file);
           const { error: upErr } = await supabase.storage.from("project-docs").upload(path, file);
           const { error: dbErr } = upErr ? { error: upErr } : await supabase.from("project_documents").insert({
             project_id: id!, file_name: file.name, file_path: path, uploaded_by: profile.id, doc_type_id: typeId,

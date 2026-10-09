@@ -1,52 +1,80 @@
 
+-- Idempotent: the enum swaps only run while the old enum labels still exist.
+-- On an already-migrated database, re-running the ALTER COLUMN would fail
+-- because later migrations add triggers that reference projects.category.
+
 -- 1) project_category swap
-CREATE TYPE public.project_category_v2 AS ENUM (
-  'novos_negocios',
-  'infraestrutura_crescimento',
-  'manutencao_recorrente',
-  'manutencao_ciclica_estrutural',
-  'experiencia_cliente',
-  'eficiencia_operacional',
-  'infraestrutura_colaboradores'
-);
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_enum e JOIN pg_type t ON t.oid = e.enumtypid
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE n.nspname = 'public' AND t.typname = 'project_category' AND e.enumlabel = 'expansao'
+  ) THEN
+    DROP TYPE IF EXISTS public.project_category_v2;
+    CREATE TYPE public.project_category_v2 AS ENUM (
+      'novos_negocios',
+      'infraestrutura_crescimento',
+      'manutencao_recorrente',
+      'manutencao_ciclica_estrutural',
+      'experiencia_cliente',
+      'eficiencia_operacional',
+      'infraestrutura_colaboradores'
+    );
 
-ALTER TABLE public.projects
-  ALTER COLUMN category TYPE public.project_category_v2
-  USING (
-    CASE category::text
-      WHEN 'expansao' THEN 'novos_negocios'
-      WHEN 'transformacao' THEN 'infraestrutura_crescimento'
-      WHEN 'manutencao_recorrente' THEN 'manutencao_recorrente'
-      WHEN 'manutencao_estrutural' THEN 'manutencao_ciclica_estrutural'
-      WHEN 'outro' THEN 'eficiencia_operacional'
-      ELSE 'eficiencia_operacional'
-    END
-  )::public.project_category_v2;
+    ALTER TABLE public.projects
+      ALTER COLUMN category TYPE public.project_category_v2
+      USING (
+        CASE category::text
+          WHEN 'expansao' THEN 'novos_negocios'
+          WHEN 'transformacao' THEN 'infraestrutura_crescimento'
+          WHEN 'manutencao_recorrente' THEN 'manutencao_recorrente'
+          WHEN 'manutencao_estrutural' THEN 'manutencao_ciclica_estrutural'
+          WHEN 'outro' THEN 'eficiencia_operacional'
+          ELSE 'eficiencia_operacional'
+        END
+      )::public.project_category_v2;
 
-DROP TYPE public.project_category;
-ALTER TYPE public.project_category_v2 RENAME TO project_category;
+    DROP TYPE public.project_category;
+    ALTER TYPE public.project_category_v2 RENAME TO project_category;
+  ELSE
+    DROP TYPE IF EXISTS public.project_category_v2;
+  END IF;
+END $$;
 
 -- 2) areas.director_id
 ALTER TABLE public.areas
   ADD COLUMN IF NOT EXISTS director_id uuid REFERENCES auth.users(id) ON DELETE SET NULL;
 
 -- 3) window_type swap
-CREATE TYPE public.window_type_v2 AS ENUM ('submissao','analise','fechado');
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM pg_enum e JOIN pg_type t ON t.oid = e.enumtypid
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE n.nspname = 'public' AND t.typname = 'window_type' AND e.enumlabel = 'intake'
+  ) THEN
+    DROP TYPE IF EXISTS public.window_type_v2;
+    CREATE TYPE public.window_type_v2 AS ENUM ('submissao','analise','fechado');
 
-ALTER TABLE public.windows
-  ALTER COLUMN type TYPE public.window_type_v2
-  USING (
-    CASE type::text
-      WHEN 'intake' THEN 'submissao'
-      WHEN 'submissao' THEN 'submissao'
-      WHEN 'emergencial' THEN 'submissao'
-      WHEN 'revisao' THEN 'analise'
-      ELSE 'fechado'
-    END
-  )::public.window_type_v2;
+    ALTER TABLE public.windows
+      ALTER COLUMN type TYPE public.window_type_v2
+      USING (
+        CASE type::text
+          WHEN 'intake' THEN 'submissao'
+          WHEN 'submissao' THEN 'submissao'
+          WHEN 'emergencial' THEN 'submissao'
+          WHEN 'revisao' THEN 'analise'
+          ELSE 'fechado'
+        END
+      )::public.window_type_v2;
 
-DROP TYPE public.window_type;
-ALTER TYPE public.window_type_v2 RENAME TO window_type;
+    DROP TYPE public.window_type;
+    ALTER TYPE public.window_type_v2 RENAME TO window_type;
+  ELSE
+    DROP TYPE IF EXISTS public.window_type_v2;
+  END IF;
+END $$;
 
 ALTER TABLE public.windows
   ADD COLUMN IF NOT EXISTS auto_transition boolean NOT NULL DEFAULT true;
@@ -64,6 +92,7 @@ FOR SELECT TO authenticated USING (
 );
 
 DROP POLICY IF EXISTS projects_update_owner_or_fpa_or_cfo_or_ceo ON public.projects;
+DROP POLICY IF EXISTS projects_update_owner_or_fpa_or_cfo_or_ceo_or_cco_or_cmo ON public.projects;
 CREATE POLICY projects_update_owner_or_fpa_or_cfo_or_ceo_or_cco_or_cmo ON public.projects
 FOR UPDATE TO authenticated
 USING (

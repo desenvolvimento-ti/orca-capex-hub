@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { projectDocPath } from "@/lib/storage";
 import { formatDateBR } from "@/lib/labels";
 import { Upload, Loader2, Check, AlertCircle, Paperclip } from "lucide-react";
 
@@ -80,7 +81,7 @@ export function DocumentsPanel({
   const upload = useMutation({
     mutationFn: async (file: File) => {
       if (!profile) throw new Error("Sessão expirada.");
-      const path = `${profile.id}/${projectId}/${Date.now()}-${file.name}`;
+      const path = projectDocPath(profile.id, projectId, file);
       const { error: upErr } = await supabase.storage.from("project-docs").upload(path, file);
       if (upErr) throw upErr;
       const { error: dbErr } = await supabase.from("project_documents").insert({

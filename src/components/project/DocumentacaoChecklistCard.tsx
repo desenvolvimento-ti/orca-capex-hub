@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { projectDocPath } from "@/lib/storage";
 import { formatBRL, formatDateBR } from "@/lib/labels";
 import { Check, AlertCircle, Upload, Loader2, FileText, Send } from "lucide-react";
 
@@ -181,7 +182,7 @@ function UploadDialog({
   const upload = useMutation({
     mutationFn: async (file: File) => {
       if (!profile) throw new Error("Sessão expirada.");
-      const path = `${profile.id}/${projectId}/${Date.now()}-${file.name}`;
+      const path = projectDocPath(profile.id, projectId, file);
       const { error: upErr } = await supabase.storage.from("project-docs").upload(path, file);
       if (upErr) throw upErr;
       const { error: dbErr } = await supabase.from("project_documents").insert({
