@@ -1,0 +1,2 @@
+ALTER TABLE public.access_requests ADD COLUMN IF NOT EXISTS directorate_id uuid REFERENCES public.directorates(id) ON DELETE SET NULL;
+ALTER TABLE public.allowed_emails ADD COLUMN IF NOT EXISTS is_active boolean NOT NULL DEFAULT true;

@@ -1,0 +1,174 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790015715781,
+      "tag": "0000_submissao_continua",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790019362573,
+      "tag": "0001_add_tir_pct_to_projects",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790084482664,
+      "tag": "0002_add_created_by_fpa_to_projects",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1790085540485,
+      "tag": "0003_allow_optional_viability_on_submission",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790087942797,
+      "tag": "0004_access_requests_and_area_approval",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790186293136,
+      "tag": "0005_stage_flow_statuses",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790186413911,
+      "tag": "0006_stage_flow_redesign",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790187222096,
+      "tag": "0007_stage3_execution_tracking",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790193886672,
+      "tag": "0008_new_project_categories",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790193923465,
+      "tag": "0009_stage1_exec_after_study",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1790256226241,
+      "tag": "0010_category_year_project_codes",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1790339716574,
+      "tag": "0011_stage1_missing_optional_docs",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790342503760,
+      "tag": "0012_fpa_pre_analise_direct_decision",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790425540273,
+      "tag": "0013_doc_types_is_required",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1790519220821,
+      "tag": "0014_fix_stage_missing_array_append",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1790613566897,
+      "tag": "0015_stage_cost_center_and_realizado",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1790769680459,
+      "tag": "0016_stage_rules_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1790859559893,
+      "tag": "0017_stage1_executor_branches_directorates",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790941457471,
+      "tag": "0018_stage1_in_execution_cost_center",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1790941530612,
+      "tag": "0019_handle_new_user_directorate",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1791144380347,
+      "tag": "0020_access_directorate_active",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1791201957164,
+      "tag": "0021_doc_types_uploader_role",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1791290844566,
+      "tag": "0022_gen_project_code_security_definer",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1791293316656,
+      "tag": "0023_indicativo_zero_months",
+      "breakpoints": true
+    }
+  ]
+}

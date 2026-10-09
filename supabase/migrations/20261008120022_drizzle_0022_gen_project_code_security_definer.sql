@@ -1,0 +1,1 @@
+ALTER FUNCTION public.gen_project_code() SECURITY DEFINER;

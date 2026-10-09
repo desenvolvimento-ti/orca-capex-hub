@@ -1,0 +1,1 @@
+ALTER TABLE public.cycles ADD COLUMN archived_at timestamptz;

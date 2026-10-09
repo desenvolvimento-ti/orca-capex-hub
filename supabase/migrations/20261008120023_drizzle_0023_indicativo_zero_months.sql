@@ -1,0 +1,2 @@
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS indicativo_zero_months text[] NOT NULL DEFAULT '{}';
+COMMENT ON COLUMN public.projects.indicativo_zero_months IS 'Meses do cronograma indicativo confirmados como sem desembolso (chave phase:YYYY-MM-01).';

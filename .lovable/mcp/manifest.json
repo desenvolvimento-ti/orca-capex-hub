@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://aijrqxlpsrngwwedsziv.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "beach-park-capex-hub",
+      "version": "0.1.0",
+      "title": "Beach Park CapEx Hub"
+    },
+    "tools": [
+      {
+        "name": "list_cycles",
+        "title": "Listar ciclos CapEx",
+        "description": "Lista os ciclos CapEx com suas janelas de submissão e análise.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "only_active": {
+              "description": "Se verdadeiro, retorna apenas ciclos ativos.",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_projects",
+        "title": "Listar projetos CapEx",
+        "description": "Lista os projetos CapEx visíveis para o usuário autenticado, com filtros opcionais por status, área, ciclo e busca por nome/código.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "status": {
+              "description": "Filtra por status exato do projeto, ex.: em_execucao.",
+              "type": "string"
+            },
+            "area_id": {
+              "description": "UUID da área.",
+              "type": "string"
+            },
+            "cycle_id": {
+              "description": "UUID do ciclo.",
+              "type": "string"
+            },
+            "search": {
+              "description": "Busca parcial por nome ou código do projeto.",
+              "type": "string"
+            },
+            "limit": {
+              "description": "Máximo de registros (padrão 50, teto 200).",
+              "type": "number"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_project",
+        "title": "Detalhar projeto CapEx",
+        "description": "Retorna os detalhes de um projeto CapEx, incluindo cronograma de desembolsos (planejado e realizado) e histórico de status.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "UUID do projeto."
+            }
+          },
+          "required": [
+            "project_id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "add_project_comment",
+        "title": "Comentar em projeto",
+        "description": "Adiciona um comentário no chat de um projeto CapEx, em nome do usuário autenticado.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "project_id": {
+              "type": "string",
+              "description": "UUID do projeto."
+            },
+            "body": {
+              "type": "string",
+              "description": "Texto do comentário."
+            }
+          },
+          "required": [
+            "project_id",
+            "body"
+          ]
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE public.cycles ADD COLUMN IF NOT EXISTS cycle_start_date timestamptz NULL;

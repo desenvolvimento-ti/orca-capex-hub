@@ -1,0 +1,2 @@
+ALTER TABLE public.projects ADD COLUMN IF NOT EXISTS created_by_fpa BOOLEAN NOT NULL DEFAULT false;
+COMMENT ON COLUMN public.projects.created_by_fpa IS 'True quando o projeto foi cadastrado pelo time de FP&A (e nao pelo gestor da area).';
